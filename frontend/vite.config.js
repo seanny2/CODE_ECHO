@@ -12,7 +12,8 @@ export default defineConfig({
         room: resolve(__dirname, 'room.html'),
         chat: resolve(__dirname, 'chat.html'),
       }
-    }
+    },
+    hash: false,
   }, // 빌드 결과물이 생성되는 경로
   server: {
     proxy: {

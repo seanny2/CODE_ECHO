@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>WebSocket Chat</title>
-     <!-- 외부 CSS 파일을 연결-->
+    <link rel="stylesheet" href="style.css"> <!-- 외부 CSS 파일을 연결-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     
-  <link rel="stylesheet" href="../static/assets/style.4bfd042e.css">
+  <script type="module" crossorigin src="./assets/main.72b2cdd0.js"></script>
+  <link rel="stylesheet" href="./assets/main.7038a229.css">
 </head>
 <body>
-<div class="chat_wrap">D
+<div class="chat_wrap">
     <div class="header">
         Chat Room: <span th:text="${roomName}">Room Name</span>
     </div>
@@ -25,7 +26,7 @@
 </div>
 
 <script>
-    const roomName = "${roomName}"; // 방의 이름을 뷰에서 가져옴
+    const roomName = "[[${roomName}]]"; // 방의 이름을 뷰에서 가져옴
     const myName = "User"; // 메시지와 비교할 내 이름
 
     // 방 이름을 사용해 WebSocket 서버와 연결

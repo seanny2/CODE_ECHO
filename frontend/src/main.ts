@@ -6,10 +6,11 @@ import { Transaction } from '@codemirror/state';
 import { network } from './network';
 import { displayPeers } from './utils';
 import { YorkieDoc } from './type';
-// import SockJS from 'sockjs-client'
-// import Stomp from 'stompjs'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
-import './style.css';
+import './ide.css';
+// import './chat.css'
 import './theme.css';
 
 const editorParentElem = document.getElementById('editor')!;
@@ -136,18 +137,33 @@ async function main() {
   syncText();
   // displayLog(documentElem, documentTextElem, doc);
 
-  // if (message.body.result === "성공") {
-  //   document.getElementById("output").style.color = "#000";
-  //   document.getElementById("result").style.color = "#000";
-  // } else {
-  //   document.getElementById("output").style.color = "#f00";
-  //   document.getElementById("result").style.color = "#f00";
-  // }
 
-  // document.getElementById("output").innerHTML = response.data.SystemOut != null ? response.data.SystemOut.replace(/\n/g, "<br>") : "";
-  // document.getElementById("performance").textContent = response.data.performance;
-  // document.getElementById("result").textContent = response.data.result;
+  const socket = new SockJS('/websocket');
+  const stompClient = Stomp.over(socket);
 
+  stompClient.connect({}, () => {
+    console.log('Connected to WebSocket');
+    stompClient.subscribe('/topic/print/', (response: any) => {
+      console.log(response);
+
+      if (response.result === "성공") {
+        document.getElementById("output")!.style.color = "#000";
+        document.getElementById("result")!.style.color = "#000";
+      } else {
+        document.getElementById("output")!.style.color = "#f00";
+        document.getElementById("result")!.style.color = "#f00";
+      }
+
+      document.getElementById("output")!.innerHTML = response.SystemOut != null ? response.SystemOut.replace(/\n/g, "<br>") : "";
+      document.getElementById("performance")!.textContent = response.performance;
+      document.getElementById("result")!.textContent = response.result;
+    });
+
+    document.getElementById('compile')!.addEventListener('click', () => {
+      console.log('HI');
+      stompClient.send('/app/compile/', {}, JSON.stringify(view.contentDOM.innerText));
+    });
+  });
 
 
 }

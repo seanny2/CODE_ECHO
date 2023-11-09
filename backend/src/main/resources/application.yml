@@ -8,5 +8,11 @@ spring:
   mvc:
     static-path-pattern: /static/**
 
+  thymeleaf:
+    prefix: classpath:static/   #타임리프 루트경로
+    suffix: .html     #확장자 생략
+    check-template-location: true   #??
+
 server:
   port: 8083
+

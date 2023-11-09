@@ -9,12 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RoomViewController {
     @GetMapping("/room")
     public String room() {
-        return "room.html";
+        return "../static/room.html";
     }
 
-    @MessageMapping("/room")
-    @SendTo("/topic/room")
-    public String sendMessage(String message) {
-        return "1";
-    }
 }

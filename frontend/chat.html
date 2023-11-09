@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>WebSocket Chat</title>
-    <link rel="stylesheet" href="./src/style.css"> <!-- 외부 CSS 파일을 연결-->
+    <link rel="stylesheet" href="style.css"> <!-- 외부 CSS 파일을 연결-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     
@@ -22,7 +22,7 @@
         <button onclick="sendMessage()">Send</button>
     </div>
 </div>
-
+<script type="module" src="/src/main.ts"></script>
 <script>
     const roomName = "[[${roomName}]]"; // 방의 이름을 뷰에서 가져옴
     const myName = "User"; // 메시지와 비교할 내 이름

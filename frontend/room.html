@@ -37,19 +37,7 @@
       </div>
     </div>
   </div>
-  
   <script type="module" src="/src/main.ts"></script>
-  <script>
-    const socket = new SockJS('/compile-websocket');
-    const stompClient = Stomp.over(socket);
-
-    // stompClient.connect({}, () => {
-    //     console.log('Connected to WebSocket');
-    //     stompClient.subscribe('/topic/room/', (message) => {
-    //         displayMessage(JSON.parse(message.body));
-    //     });
-    // });
-  </script>
 </body>
 
 </html>
