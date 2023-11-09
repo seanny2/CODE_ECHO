@@ -5,5 +5,8 @@ spring:
     username: root
     password: root
 
+  mvc:
+    static-path-pattern: /static/**
+
 server:
   port: 8083

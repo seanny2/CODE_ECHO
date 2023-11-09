@@ -1,29 +1,31 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import yorkie, { DocEventType, OperationInfo } from 'yorkie-js-sdk';
 import { basicSetup, EditorView } from 'codemirror';
-import { keymap } from '@codemirror/view';
-import {
-  markdown,
-  markdownKeymap,
-  markdownLanguage,
-} from '@codemirror/lang-markdown';
+import { java } from '@codemirror/lang-java';
 import { Transaction } from '@codemirror/state';
 import { network } from './network';
-import { displayLog, displayPeers } from './utils';
+import { displayPeers } from './utils';
 import { YorkieDoc } from './type';
+// import SockJS from 'sockjs-client'
+// import Stomp from 'stompjs'
+
 import './style.css';
+import './theme.css';
 
 const editorParentElem = document.getElementById('editor')!;
 const peersElem = document.getElementById('peers')!;
-const documentElem = document.getElementById('document')!;
-const documentTextElem = document.getElementById('document-text')!;
+// const documentElem = document.getElementById('document')!;
+// const documentTextElem = document.getElementById('document-text')!;
 const networkStatusElem = document.getElementById('network-status')!;
+// const compileBtn = document.getElementById('compile')!;
+
 
 async function main() {
   // 01. create client with RPCAddr(envoy) then activate it.
   const client = new yorkie.Client(import.meta.env.VITE_YORKIE_API_ADDR, {
     apiKey: import.meta.env.VITE_YORKIE_API_KEY,
   });
+
   await client.activate();
 
   // subscribe peer change event
@@ -32,7 +34,13 @@ async function main() {
   });
 
   // 02-1. create a document then attach it into the client.
-  const doc = new yorkie.Document<YorkieDoc>(Math.random().toString()); // 초대 링크를 파라미터로 기입
+  // const doc = new yorkie.Document<YorkieDoc>(Math.random().toString()); // 초대 링크를 파라미터로 기입
+  const doc = new yorkie.Document<YorkieDoc>(
+    `codemirror6-${new Date()
+      .toISOString()
+      .substring(0, 10)
+      .replace(/-/g, '')}`,
+  );
   console.log(doc);
   doc.subscribe('presence', (event) => {
     if (event.type !== DocEventType.PresenceChanged) {
@@ -59,7 +67,7 @@ async function main() {
       // The text is replaced to snapshot and must be re-synced.
       syncText();
     }
-    displayLog(documentElem, documentTextElem, doc);
+    // displayLog(documentElem, documentTextElem, doc);
   });
 
   doc.subscribe('$.content', (event) => {
@@ -96,8 +104,7 @@ async function main() {
     doc: '',
     extensions: [
       basicSetup,
-      markdown({ base: markdownLanguage }),
-      keymap.of(markdownKeymap),
+      java(),
       updateListener,
     ],
     parent: editorParentElem,
@@ -127,7 +134,22 @@ async function main() {
   }
 
   syncText();
-  displayLog(documentElem, documentTextElem, doc);
+  // displayLog(documentElem, documentTextElem, doc);
+
+  // if (message.body.result === "성공") {
+  //   document.getElementById("output").style.color = "#000";
+  //   document.getElementById("result").style.color = "#000";
+  // } else {
+  //   document.getElementById("output").style.color = "#f00";
+  //   document.getElementById("result").style.color = "#f00";
+  // }
+
+  // document.getElementById("output").innerHTML = response.data.SystemOut != null ? response.data.SystemOut.replace(/\n/g, "<br>") : "";
+  // document.getElementById("performance").textContent = response.data.performance;
+  // document.getElementById("result").textContent = response.data.result;
+
+
+
 }
 
 main();

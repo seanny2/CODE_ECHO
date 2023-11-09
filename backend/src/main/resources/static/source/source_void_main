@@ -1,0 +1,10 @@
+import java.util.*;
+
+public class DynamicClass {
+
+	public static void main(String[] args) {
+
+        // 여기에 코드를 입력하세요!
+        System.out.println("Hello World!");
+	}
+}

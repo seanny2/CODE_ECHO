@@ -7,6 +7,9 @@
   <title>Room</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script type="module" crossorigin src="../static/assets/room.583eea50.js"></script>
+  <link rel="stylesheet" href="../static/assets/room.c0fb615a.css">
+  <link rel="stylesheet" href="../static/assets/style.4bfd042e.css">
 </head>
 
 <body>
@@ -38,9 +41,9 @@
     </div>
   </div>
   
-  <script type="module" src="/src/main.ts"></script>
+  
   <script>
-    const socket = new SockJS('/compile-websocket');
+    const socket = new SockJS('/websocket');
     const stompClient = Stomp.over(socket);
 
     // stompClient.connect({}, () => {

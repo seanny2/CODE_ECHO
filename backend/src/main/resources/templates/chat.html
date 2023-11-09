@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+     <!-- 외부 CSS 파일을 연결-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    
+  <link rel="stylesheet" href="../static/assets/style.4bfd042e.css">
+</head>
+<body>
+<div class="chat_wrap">D
+    <div class="header">
+        Chat Room: <span th:text="${roomName}">Room Name</span>
+    </div>
+    <div class="chat">
+        <ul id="messages">
+            <!-- 동적으로 생성될 메시지 목록 -->
+        </ul>
+    </div>
+    <div class="input-div">
+        <input type="text" id="message" placeholder="Enter a message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    const roomName = "${roomName}"; // 방의 이름을 뷰에서 가져옴
+    const myName = "User"; // 메시지와 비교할 내 이름
+
+    // 방 이름을 사용해 WebSocket 서버와 연결
+    const socket = new SockJS('/websocket');
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, () => {
+        console.log('Connected to WebSocket');
+        stompClient.subscribe('/topic/room/' + roomName, (message) => {
+            displayMessage(JSON.parse(message.body));
+        });
+    });
+
+    function sendMessage() {
+        const messageInput = document.getElementById('message');
+        const messageText = messageInput.value;
+        const sender = 'User'; // 메시지에 들어갈 이름
+        const message = { text: messageText, sender: sender };
+        stompClient.send('/app/chat/' + roomName, {}, JSON.stringify(message));
+        //입력창 비우기
+        messageInput.value = '';
+
+    }
+
+    function displayMessage(message) {
+        const messages = document.getElementById('messages');
+        const li = document.createElement('li');
+        li.textContent = `${message.sender}: ${message.text}`;
+        messages.appendChild(li);
+
+        // 내 채팅인 경우 오른쪽, 상대방 채팅인 경우 왼쪽으로 정렬
+        const LR_className = message.sender === myName ? 'right' : 'left';
+
+        li.innerHTML = `
+        <div class="message ${LR_className}">
+            <div class="sender">${message.sender}:</div>
+            <div class="text">${message.text}</div>
+        </div>`;
+
+        // 스크롤바를 가장 아래로 이동
+        messages.scrollTop = messages.scrollHeight;
+
+    }
+
+
+
+</script>
+</body>
+</html>
