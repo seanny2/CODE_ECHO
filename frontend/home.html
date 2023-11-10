@@ -70,14 +70,14 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8083/create",
+                    url: "http://52.78.5.44/create",
                     contentType: "application/json",
                     data: JSON.stringify({
                         id: roomId
                     }),
                     success: function (response) {
                         sessionStorage.setItem('userId', nickname);
-                        window.location.href = `http://localhost:8083/${roomId}`;
+                        window.location.href = `http://52.78.5.44/${roomId}`;
                         console.log(`[${roomId}] 방을 생성하였습니다.`)
                     },
                     error: function (error) {
@@ -87,7 +87,7 @@
             });
             $("#enter").click(function () {
                 sessionStorage.setItem('userId', document.getElementById("name-input1").value);
-                window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
+                window.location.href = "http://52.78.5.44/" + document.getElementById("link-input").value;
             });
 
             $("#create-uuid-btn").click(function () {

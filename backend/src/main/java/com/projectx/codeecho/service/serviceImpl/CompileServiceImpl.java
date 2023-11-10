@@ -23,7 +23,7 @@ import java.util.concurrent.*;
 @Slf4j
 @Component
 public class CompileServiceImpl implements CompileService {
-    private final String path = CodeEchoApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    private final String path = "./";
 
     public Object compileCode(String body) {
         String uuid = UUID.randomUUID().toString().replace("-","");

@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
+                        "http://52.78.5.44",
                         "http://localhost:8083",
                         "http://127.0.0.1:8083",
                         "http://127.0.0.1:5500")   // local환경 html 확인용

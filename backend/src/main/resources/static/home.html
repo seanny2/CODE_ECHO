@@ -40,7 +40,7 @@
                 <div style="max-width: 350px;">
                     <div id="create-uuid" class="input-group mb-3">
                         <input id="print-uuid" type="text" class="form-control" placeholder="코드를 생성하세요"
-                            aria-label="Recipient's username" aria-describedby="create-uuid-btn">
+                            aria-label="Recipient's username" aria-describedby="create-uuid-btn" disabled>
                         <button id="create-uuid-btn" class="service_btn">코드 생성</button>
                     </div>
                     <div id="create-nickname" class="input-group mb-3">
@@ -71,14 +71,14 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8083/create",
+                    url: "http://52.78.5.44/create",
                     contentType: "application/json",
                     data: JSON.stringify({
                         id: roomId
                     }),
                     success: function (response) {
                         sessionStorage.setItem('userId', nickname);
-                        window.location.href = `http://localhost:8083/${roomId}`;
+                        window.location.href = `http://52.78.5.44/${roomId}`;
                         console.log(`[${roomId}] 방을 생성하였습니다.`)
                     },
                     error: function (error) {
@@ -88,7 +88,7 @@
             });
             $("#enter").click(function () {
                 sessionStorage.setItem('userId', document.getElementById("name-input1").value);
-                window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
+                window.location.href = "http://52.78.5.44/" + document.getElementById("link-input").value;
             });
 
             $("#create-uuid-btn").click(function () {

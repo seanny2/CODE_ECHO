@@ -200,14 +200,14 @@ async function main(roomId: string, userId: string) {
         if (users.length===1) {
             axios({
                 method: 'delete',
-                url: 'http://localhost:8083/delete',
+                url: 'http://52.78.5.44/delete',
                 data: {
                     id: roomId
                 }
             })
             .then(() => {
                 console.log(`${roomId}에는 아무도 없기 때문에 방을 삭제합니다.`);
-                location.href = "http://localhost:8083";
+                location.href = "http://52.78.5.44";
             })
         }
 
@@ -230,6 +230,6 @@ if (sessionId) {
         main(roomId, paramId);
     } else {
         console.log(`불러올 유저 정보가 없습니다.`);
-        location.href = "http://localhost:8083";
+        location.href = "http://52.78.5.44";
     }
 }
