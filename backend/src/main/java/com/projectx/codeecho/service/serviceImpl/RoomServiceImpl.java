@@ -1,9 +1,7 @@
 package com.projectx.codeecho.service.serviceImpl;
 
 import com.projectx.codeecho.domain.dto.RoomDto;
-import com.projectx.codeecho.domain.entity.MemberEntity;
 import com.projectx.codeecho.domain.entity.RoomEntity;
-import com.projectx.codeecho.repository.MemberRepository;
 import com.projectx.codeecho.repository.RoomRepository;
 import com.projectx.codeecho.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-    private final MemberRepository memberRepository;
 
     @Override
     public boolean isPresent(String roomId) {
@@ -38,13 +35,9 @@ public class RoomServiceImpl implements RoomService {
         System.out.printf("[%s]: %s", this.getClass().toString(), "회의실 생성 메소드 실행\n");
         try {
             if (!isPresent(room.getId())) {
-                MemberEntity foundMember = memberRepository.findById(room.getHostId())
-                        .orElseThrow(() -> new IllegalArgumentException((this.getClass().toString())));
-
                 roomRepository.save(
                         RoomEntity.builder()
                                 .id(room.getId())
-                                .host(foundMember)
                                 .build()
                 );
                 System.out.printf("[%s]: '%s'을 생성하였습니다.\n", this.getClass().toString(), room.getId());

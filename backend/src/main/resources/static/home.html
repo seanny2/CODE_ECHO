@@ -6,47 +6,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>코드-에코</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     
-  <link rel="stylesheet" href="/assets/home.980e0945.css">
+  <link rel="stylesheet" href="/assets/home.e9410cae.css">
 </head>
 
 <body>
     <div id="main">
-        <div id="title">프로그래머를 위한<br />코드 공유 편집 서비스</div>
+        <div id="title">프로그래머를 위한<br /> 코드 공동 편집 서비스</div>
         <div id="subtitle">누구나 실시간으로 코드 동시 편집과 채팅을 즐길 수 있도록 설계하였습니다.</div>
         <div id="service">
-            <button id="start">새 회의</button>
-            <div class="enter-wrap">
-                <input id="link-input" placeholder="코드 입력"></input>
-                <button id="enter">참여</button>
+            <div id="button-group">
+                <p class="d-inline-flex gap-1">
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#create-room-btn" role="button"
+                        aria-expanded="false" aria-controls="create-room-btn">
+                        새 회의
+                    </a>
+                </p>
+                <div class="enter-wrap input-group">
+                    <input id="link-input" type="text" aria-label="First name" class="form-control" placeholder="코드 입력">
+                    <input id="name-input1" type="text" aria-label="Last name" class="form-control"
+                        placeholder="닉네임 입력">
+                    <button id="enter" class="service_btn">게스트로 참가</button>
+                </div>
+            </div>
+            <div class="collapse" id="create-room-btn">
+                <div class="split-line"></div>
+                <h4 style="margin-top: 30px;">호스트로 참가하기</h4>
+                <div style="max-width: 350px;">
+                    <div id="create-uuid" class="input-group mb-3">
+                        <input id="print-uuid" type="text" class="form-control" placeholder="코드를 생성하세요"
+                            aria-label="Recipient's username" aria-describedby="create-uuid-btn">
+                        <button id="create-uuid-btn" class="service_btn">코드 생성</button>
+                    </div>
+                    <div id="create-nickname" class="input-group mb-3">
+                        <input id="name-input2" type="text" class="form-control" placeholder="닉네임을 입력하세요"
+                            aria-label="Recipient's username" aria-describedby="start">
+                        <button class="service_btn" id="start">확인</button>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div id="split-line"></div>
+        <div class="split-line"></div>
         <div id="support">계정이 없나요? <span>지금 시작하세요</span></div>
     </div>
     <script>
-        $(document).ready(function() {
-            $("#start").click(function() {
-            // HTTP 요청을 수행할 코드를 여기에 작성합니다.
+        $(document).ready(function () {
+            $("#start").click(function () {
+                var roomId = document.getElementById("print-uuid").value;
+                var nickname = document.getElementById("name-input2").value;
+                console.log()
+                if (roomId === "") {
+                    alert("코드를 생성하세요");
+                    return;
+                }
+                if (nickname === "") {
+                    alert("닉네임을 입력하세요");
+                    return;
+                }
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:8083/create",
                     contentType: "application/json",
                     data: JSON.stringify({
-                        id: get_uuid(),
-                        hostId: "hwan1625"
+                        id: roomId
                     }),
-                    success: function(response) {
+                    success: function (response) {
+                        sessionStorage.setItem('userId', nickname);
+                        window.location.href = `http://localhost:8083/${roomId}`;
+                        console.log(`[${roomId}] 방을 생성하였습니다.`)
                     },
-                    error: function(error) {
+                    error: function (error) {
+                        console.log(`[${roomId}] 방을 생성할 수 없습니다!.`);
                     }
                 });
             });
-            $("#enter").click(function() {
+            $("#enter").click(function () {
+                sessionStorage.setItem('userId', document.getElementById("name-input1").value);
                 window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
             });
-        });
 
+            $("#create-uuid-btn").click(function () {
+                document.getElementById("print-uuid").value = get_uuid();
+            })
+
+        });
 
         function get_uuid() {
             const crypto = window.crypto || window.msCrypto;

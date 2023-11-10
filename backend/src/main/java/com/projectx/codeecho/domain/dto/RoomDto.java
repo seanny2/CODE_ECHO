@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoomDto {
     private String id;
-    private String hostId;
 }

@@ -1,23 +1,21 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import yorkie, { DocEventType, OperationInfo } from 'yorkie-js-sdk';
+import yorkie, { OperationInfo } from 'yorkie-js-sdk';
 import { basicSetup, EditorView } from 'codemirror';
 import { java } from '@codemirror/lang-java';
 import { Transaction } from '@codemirror/state';
 import { network } from './network';
-import { displayPeers } from './utils';
 import { YorkieDoc } from './type';
+import { darcula } from '@uiw/codemirror-theme-darcula';
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
+import axios from 'axios';
 
 const editorParentElem = document.getElementById('editor')!;
-const peersElem = document.getElementById('peers')!;
-// const documentElem = document.getElementById('document')!;
-// const documentTextElem = document.getElementById('document-text')!;
 const networkStatusElem = document.getElementById('network-status')!;
-// const compileBtn = document.getElementById('compile')!;
 
 
-async function main(roomName: string) {
+async function main(roomId: string, userId: string) {
+
     // 01. create client with RPCAddr(envoy) then activate it.
     const client = new yorkie.Client(import.meta.env.VITE_YORKIE_API_ADDR, {
         apiKey: import.meta.env.VITE_YORKIE_API_KEY,
@@ -30,15 +28,12 @@ async function main(roomName: string) {
         network.statusListener(networkStatusElem)(event);
     });
 
+
     // 02-1. create a document then attach it into the client.
-    const doc = new yorkie.Document<YorkieDoc>(roomName); // 초대 링크를 파라미터로 기입
-    console.log(doc);
-    doc.subscribe('presence', (event) => {
-        if (event.type !== DocEventType.PresenceChanged) {
-            displayPeers(peersElem, doc.getPresences(), client.getID()!);
-        }
-    });
+    const doc = new yorkie.Document<YorkieDoc>(roomId); // 초대 링크를 파라미터로 기입
     await client.attach(doc);
+
+
     doc.update((root) => {
         if (!root.content) {
             root.content = new yorkie.Text();
@@ -58,7 +53,6 @@ async function main(roomName: string) {
             // The text is replaced to snapshot and must be re-synced.
             syncText();
         }
-        // displayLog(documentElem, documentTextElem, doc);
     });
 
     doc.subscribe('$.content', (event) => {
@@ -97,6 +91,7 @@ async function main(roomName: string) {
             basicSetup,
             java(),
             updateListener,
+            darcula,
         ],
         parent: editorParentElem,
     });
@@ -125,10 +120,7 @@ async function main(roomName: string) {
     }
 
     syncText();
-    // displayLog(documentElem, documentTextElem, doc);
 
-    
-    const myName = "User"; // 메시지와 비교할 내 이름
 
     // 방 이름을 사용해 WebSocket 서버와 연결
     const socket = new SockJS('/websocket');
@@ -136,10 +128,10 @@ async function main(roomName: string) {
 
     stompClient.connect({}, () => {
         console.log('Connected to WebSocket');
-        stompClient.subscribe('/topic/room/chat/' + roomName, (response) => {
+        stompClient.subscribe('/topic/room/chat/' + roomId, (response) => {
             displayMessage(JSON.parse(response.body));
         });
-        stompClient.subscribe('/topic/room/compile/' + roomName, (response) => {
+        stompClient.subscribe('/topic/room/compile/' + roomId, (response) => {
             const data = JSON.parse(response.body);
             if (data.result === "성공") {
                 document.getElementById("output")!.style.color = "#000";
@@ -159,16 +151,15 @@ async function main(roomName: string) {
     function displayMessage(message: any) {
         const messages = document.getElementById('messages')!;
         const li = document.createElement('li');
-        li.textContent = `${message.sender}: ${message.text}`;
         messages.appendChild(li);
 
         // 내 채팅인 경우 오른쪽, 상대방 채팅인 경우 왼쪽으로 정렬
-        const LR_className = message.sender === myName ? 'right' : 'left';
+        const LR_className = message.sender === userId ? 'right' : 'left';
 
         li.innerHTML = `
         <div class="message ${LR_className}">
-        <div class="sender">${message.sender}:</div>
-        <div class="text">${message.text}</div>
+            <div class="sender">${message.sender}</div>
+            <div class="text">${message.content}</div>
         </div>`;
 
         // 스크롤바를 가장 아래로 이동
@@ -177,21 +168,68 @@ async function main(roomName: string) {
 
     document.getElementById('sendBtn')?.addEventListener('click', () => {
         const messageInput = <HTMLInputElement>document.getElementById('message')!;
-        const messageText = messageInput.value;
-        const sender = 'User'; // 메시지에 들어갈 이름
-        const message = { text: messageText, sender: sender };
-        stompClient.send('/app/room/chat/' + roomName, {}, JSON.stringify(message));
+        const message = { "content": messageInput.value, "sender": userId };
+        stompClient.send('/app/room/chat/' + roomId, {}, JSON.stringify(message));
         //입력창 비우기
         messageInput.value = '';
     });
 
     document.getElementById('compile')?.addEventListener('click', () => {
-        stompClient.send('/app/room/compile/' + roomName, {}, JSON.stringify({ "code": view.contentDOM.innerText }));
+        stompClient.send('/app/room/compile/' + roomId, {}, JSON.stringify({ "code": view.contentDOM.innerText }));
+    });
+
+    const chatBtn = document.getElementById('messageToggle')!;
+    const chatting = document.getElementById('chatting')!;
+    const print = document.getElementById('systemOut')!;
+
+    chatBtn.addEventListener('click', () => {
+        if (chatting.classList.contains('inactive')) {
+            chatting.classList.remove('inactive');
+            print.classList.add('inactive');
+        } else {
+            chatting.classList.add('inactive');
+            print.classList.remove('inactive');
+        }
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+        // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다.
+        event.preventDefault();
+
+        const users = doc.getPresences();
+        if (users.length===1) {
+            axios({
+                method: 'delete',
+                url: 'http://localhost:8083/delete',
+                data: {
+                    id: roomId
+                }
+            })
+            .then(() => {
+                console.log(`${roomId}에는 아무도 없기 때문에 방을 삭제합니다.`);
+                location.href = "http://localhost:8083";
+            })
+        }
+
+        event.returnValue = '';
     });
 }
 
 const currentURL: string = window.location.href;
 const pathSegments: string[] = currentURL.split('/');
-const roomName: string = pathSegments[pathSegments.length - 1];
+const roomId: string = pathSegments[pathSegments.length - 1];
 
-main(roomName);
+const sessionId = sessionStorage.getItem('userId')
+if (sessionId) {
+    main(roomId, sessionId);
+    console.log(`유저 정보 불러오기: ${sessionId}`);
+} else {
+    const paramId = new URLSearchParams(window.location.search).get("name");
+    if (paramId) {
+        console.log(`유저 정보 불러오기: ${paramId}`);
+        main(roomId, paramId);
+    } else {
+        console.log(`불러올 유저 정보가 없습니다.`);
+        location.href = "http://localhost:8083";
+    }
+}

@@ -22,9 +22,9 @@ spring:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
 
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
 
 server:
   port: 8083

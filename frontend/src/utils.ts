@@ -6,7 +6,7 @@ import { YorkieDoc } from './type';
 export function displayPeers(
   elem: HTMLElement,
   peers: Array<{ clientID: string; presence: Indexable }>,
-  myClientID: string,
+  myClientID: string
 ) {
   const usernames = [];
   for (const { clientID } of peers) {

@@ -9,8 +9,9 @@ header {
 }
 
 #main {
-    padding-top: 120px;
+    padding-top: 60px;
     height: 100%;
+    max-width: 840px;
 }
 
 #title {
@@ -24,55 +25,69 @@ header {
     padding-bottom: 54px;
 }
 
-#service {
+#button-group {
     display: flex;
 }
 
-#start {
+.btn {
     font-size: 16px;
-    font-weight: bold;
     width: 100px;
-    height: 45px;
-    background-color: rgb(74, 110, 214);
-    color: white;
-    border: none;
-    border-radius: 5px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
 }
 
-#start:hover {
+.btn:hover {
     background-color: rgb(70, 102, 201);
     cursor: pointer;
 }
 
 .enter-wrap {
+    max-width: 500px;
     height: 45px;
     margin: 0 30px 20px 30px;
 }
 
-#link-input {
+.input-data {
     font-size: 16px;
-    height: 98%;
+    height: 50px;
     width: 245px;
     border: 1px solid black;
     border-radius: 5px;
     text-align: center;
 }
 
-#enter {
+.service_btn {
     font-size: 16px;
     color: gray;
-    height: 100%;
-    width: 80px;
+    height: 50px;
     background-color: transparent;
     border: none;
+    width: 120px;
+    text-align: left;
 }
 
-#enter:hover {
+.service_btn:hover {
     cursor: pointer;
     color: black;
 }
+.input-group > input {
+    margin-right: 10px;
+}
+#create-uuid {
+    margin-top: 20px; 
+    height: 100%;
+}
 
-#split-line {
+#create-nickname {
+    display: flex;
+    margin-bottom: 30px !important;
+}
+
+
+.split-line {
     margin-top: 1em;
     border-bottom: 1px solid;
     align-self: stretch;

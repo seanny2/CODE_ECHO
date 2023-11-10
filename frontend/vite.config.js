@@ -10,7 +10,7 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, 'home.html'),
         room: resolve(__dirname, 'room.html')
-      }
+      },
     },
   }, // 빌드 결과물이 생성되는 경로
   server: {

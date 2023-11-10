@@ -55,6 +55,7 @@ public class RoomController {
      */
     @DeleteMapping("/delete")
     public ResponseEntity<String> roomDelete(@RequestBody RoomDto room) {
+
         if (roomService.deleteRoom(room)) {
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }

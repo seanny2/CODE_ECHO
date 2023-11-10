@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.23.2",
     "@types/sockjs-client": "^1.5.4",
     "sockjs-client": "^1.0.2",
     "stompjs": "^2.3.3",
@@ -22,10 +23,13 @@
     "@codemirror/language-data": "^6.1.0",
     "@codemirror/state": "^6.1.2",
     "@codemirror/view": "^6.3.1",
+    "@types/crypto-js": "^4.2.1",
     "@types/stompjs": "^2.3.8",
     "@types/ws": "^8.5.9",
+    "@uiw/codemirror-theme-darcula": "^4.21.20",
     "axios": "^1.6.1",
     "codemirror": "^6.0.1",
+    "crypto": "^1.0.1",
     "yorkie-js-sdk": "^0.4.7"
   }
 }
