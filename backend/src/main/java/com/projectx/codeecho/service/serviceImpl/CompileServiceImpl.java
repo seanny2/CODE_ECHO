@@ -1,7 +1,7 @@
 package com.projectx.codeecho.service.serviceImpl;
 
 import com.projectx.codeecho.CodeEchoApplication;
-import com.projectx.codeecho.domain.CompileResponse;
+import com.projectx.codeecho.domain.dto.CompileResponse;
 import com.projectx.codeecho.service.CompileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

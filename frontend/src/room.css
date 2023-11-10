@@ -1,0 +1,236 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(32, 33, 36);
+  height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#editor {
+  
+}
+
+#footer {
+  height: 8%;
+  display: flex;
+  padding: 0 30px;
+  color: white;
+  font-weight: bold;
+  justify-content: space-between;
+  background-color: rgb(37, 37, 41);
+}
+
+#roomInfo {
+  display: flex;
+}
+
+#roomInfo>div {
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#roomId {
+  font-size: 14px;
+  height: 100%;
+  line-height: 100%;
+}
+
+#serviceList {
+  display: flex;
+  height: 100%;
+}
+
+#serviceList>div {
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 60px;
+  text-align: center;
+  margin-left: 10px;
+  border-radius: 50%;
+}
+
+#serviceList>div:hover {
+  color: rgb(74, 110, 214);
+  cursor: pointer;
+}
+
+/* 채팅창 */
+#main {
+  position: relative;
+  height: 92%;
+}
+
+.toggle_conatiner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.toggle_form {
+  background-color: white;
+  width: 360px;
+  height: 100%;
+  margin: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inactive {
+  display: none;
+}
+
+.header {
+  font-size: 18px;
+  color: black;
+  text-align: left;
+  padding: 26px;
+}
+
+.toggle_content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.toggle_content ul {
+  list-style: none;
+}
+
+#compile_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#compile_meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+#messages {
+  display: flex;
+  margin: 5px 0;
+  max-width: 100%;
+}
+
+#messages .sender {
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: left;
+}
+
+/*메시지 텍스트 설정*/
+#messages .text {
+  word-break: break-all;
+  border: 1px solid #555;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #FCFCFC;
+  color: #555;
+  text-align: left;
+  max-width: 100%;
+}
+
+#messages .right {
+  justify-content: flex-end;
+}
+
+.input-div {
+  display: flex;
+  background-color: rgb(241, 243, 244);
+  margin: 14px;
+  border-radius: 40px;
+  height: 50px;
+}
+
+.input-div input {
+  flex: 1;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  padding-left: 26px;
+}
+
+.input-div input:focus {
+  outline: none;
+}
+
+.input-div input::placeholder {
+  line-height: 100%;
+  font-size: 14px;
+  margin-left: 30px;
+}
+
+.input-div button {
+  font-size: 14px;
+  width: 20%;
+  height: 100%;
+  width: 60px;
+  color: gray;
+  border: none;
+  background-color: transparent;
+}
+
+.input-div button:hover {
+  color: rgb(74, 110, 214);
+  cursor: pointer;
+}
+
+/* IDE */
+.green {
+  background-color: green;
+}
+
+.red {
+  background-color: red;
+}
+
+#network-status span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 0.8rem;
+  width: 0.8rem;
+  border-radius: 0.4rem;
+}
+
+#network-status:before {
+  content: '';
+  font-size: 1rem;
+}
+
+#peers:before {
+  display: block;
+  content: '';
+  font-size: 1rem;
+}
+
+#network-status,
+#peers,
+#document,
+#document-text {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  font-family: monospace;
+}

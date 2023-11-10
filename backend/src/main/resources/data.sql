@@ -1,0 +1,1 @@
+insert into member(id, password, name, email) values("hwan1625", "chltmdghks6245", "최승환", "seung1625@gmail.com");

@@ -1,32 +1,25 @@
-package com.projectx.codeecho.controller.compile;
+package com.projectx.codeecho.controller.room;
 
-import com.projectx.codeecho.domain.CompileResponse;
+import com.projectx.codeecho.domain.dto.CompileResponse;
 import com.projectx.codeecho.service.serviceImpl.CompileServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin
+
 @Controller
 @RequiredArgsConstructor
 public class CompileController {
     private final CompileServiceImpl compileService;
-
-//    @PostMapping(value="compile")
-    @MessageMapping("/compile")
-    @SendTo("/topic/print")
-    public Map<String, Object> compileCode(@RequestBody Map<String, Object> input) throws Exception {
+    @MessageMapping("/room/compile/{roomName}")
+    @SendTo("/topic/room/compile/{roomName}")
+    public Map<String, Object> compile(@RequestBody Map<String, Object> input) throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
-        System.out.println("123123123123");
+
         // compile input code
         Object obj = compileService.compileCode(input.get("code").toString());
 

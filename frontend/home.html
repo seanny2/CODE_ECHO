@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코드-에코</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="./src/home.css">
+</head>
+
+<body>
+    <div id="main">
+        <div id="title">프로그래머를 위한<br />코드 공유 편집 서비스</div>
+        <div id="subtitle">누구나 실시간으로 코드 동시 편집과 채팅을 즐길 수 있도록 설계하였습니다.</div>
+        <div id="service">
+            <button id="start">새 회의</button>
+            <div class="enter-wrap">
+                <input id="link-input" placeholder="코드 입력"></input>
+                <button id="enter">참여</button>
+            </div>
+        </div>
+        <div id="split-line"></div>
+        <div id="support">계정이 없나요? <span>지금 시작하세요</span></div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#start").click(function() {
+            // HTTP 요청을 수행할 코드를 여기에 작성합니다.
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8083/create",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        id: get_uuid(),
+                        hostId: "hwan1625"
+                    }),
+                    success: function(response) {
+                    },
+                    error: function(error) {
+                    }
+                });
+            });
+            $("#enter").click(function() {
+                window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
+            });
+        });
+
+
+        function get_uuid() {
+            const crypto = window.crypto || window.msCrypto;
+            if (crypto && crypto.getRandomValues) {
+                const buffer = new Uint16Array(4);
+                crypto.getRandomValues(buffer);
+                return (
+                    buffer[0].toString(16) +
+                    '-' +
+                    buffer[1].toString(16) +
+                    '-' +
+                    buffer[2].toString(16)
+                );
+            } else {
+                console.error('crypto.getRandomValues() is not supported in this browser.');
+                return null;
+            }
+        }
+    </script>
+</body>
+
+</html>

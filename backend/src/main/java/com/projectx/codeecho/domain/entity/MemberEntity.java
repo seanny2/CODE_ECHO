@@ -1,4 +1,4 @@
-package com.projectx.codeecho.domain;
+package com.projectx.codeecho.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,17 +13,18 @@ import lombok.*;
 @Builder
 @Table(name = "member")
 public class MemberEntity {
-    @Column(nullable = false)
-    private String name;
 
     @Id
     @Column(nullable = false, unique = true)
-    private String account;
+    private String id;
 
-    @Column(nullable = false, unique = true)
-    private String nickname;
+    @Column(nullable = false)
+    private String password;
 
-    @Column
-    private String tokenValue;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
 
 }

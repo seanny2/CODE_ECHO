@@ -1,10 +1,9 @@
 package com.projectx.codeecho.repository;
 
-import com.projectx.codeecho.domain.entity.MemberEntity;
+import com.projectx.codeecho.domain.entity.RoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberRepository extends JpaRepository<MemberEntity, String> {
-
+public interface RoomRepository extends JpaRepository<RoomEntity, String> {
 }

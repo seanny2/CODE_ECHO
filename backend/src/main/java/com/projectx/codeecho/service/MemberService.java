@@ -1,6 +1,6 @@
 package com.projectx.codeecho.service;
 
-import com.projectx.codeecho.domain.MemberEntity;
+import com.projectx.codeecho.domain.entity.MemberEntity;
 
 public interface MemberService {
     void save(MemberEntity member);

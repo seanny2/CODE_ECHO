@@ -1,6 +1,6 @@
 package com.projectx.codeecho.service.serviceImpl;
 
-import com.projectx.codeecho.domain.MemberEntity;
+import com.projectx.codeecho.domain.entity.MemberEntity;
 import com.projectx.codeecho.repository.MemberRepository;
 import com.projectx.codeecho.service.MemberService;
 import lombok.RequiredArgsConstructor;

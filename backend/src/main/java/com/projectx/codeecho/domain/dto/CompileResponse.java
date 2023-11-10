@@ -1,4 +1,4 @@
-package com.projectx.codeecho.domain;
+package com.projectx.codeecho.domain.dto;
 
 public enum CompileResponse {
     SUCEESS("성공"),

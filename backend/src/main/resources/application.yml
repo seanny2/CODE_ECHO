@@ -5,13 +5,26 @@ spring:
     username: root
     password: root
 
-  mvc:
-    static-path-pattern: /static/**
-
   thymeleaf:
     prefix: classpath:static/   #타임리프 루트경로
     suffix: .html     #확장자 생략
     check-template-location: true   #??
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  logging.level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+  sql:
+    init:
+      mode: always
 
 server:
   port: 8083
