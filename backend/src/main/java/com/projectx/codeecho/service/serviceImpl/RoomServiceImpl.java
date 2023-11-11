@@ -35,6 +35,7 @@ public class RoomServiceImpl implements RoomService {
         System.out.printf("[%s]: %s", this.getClass().toString(), "회의실 생성 메소드 실행\n");
         try {
             if (!isPresent(room.getId())) {
+
                 roomRepository.save(
                         RoomEntity.builder()
                                 .id(room.getId())
