@@ -181,8 +181,14 @@ async function main(roomId: string, userId: string) {
     const chatBtn = document.getElementById('messageToggle')!;
     const chatting = document.getElementById('chatting')!;
     const print = document.getElementById('systemOut')!;
-
+    const toggle_close_arr = document.querySelectorAll('.toggle-close')!;
+    const containers = document.querySelectorAll('.toggle_container')!;
     chatBtn.addEventListener('click', () => {
+        containers.forEach(container => {
+            if (container.className.includes('disabled')) {
+                container.classList.remove('disabled');
+            }
+        })
         if (chatting.classList.contains('inactive')) {
             chatting.classList.remove('inactive');
             print.classList.add('inactive');
@@ -191,27 +197,71 @@ async function main(roomId: string, userId: string) {
             print.classList.remove('inactive');
         }
     });
+    toggle_close_arr.forEach(toggle_close => {
+        toggle_close.addEventListener('click', () => {
+            containers.forEach(container => {
+                container.classList.add('disabled');
+            })
+        })
+    })
 
     window.addEventListener('beforeunload', (event) => {
         // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다.
         event.preventDefault();
 
         const users = doc.getPresences();
-        if (users.length===1) {
+        if (users.length === 1) {
             axios({
                 method: 'delete',
-                url: 'http://localhost:8083/delete',
+                url: 'http://52.78.5.44/delete',
                 data: {
                     id: roomId
                 }
             })
-            .then(() => {
-                console.log(`${roomId}에는 아무도 없기 때문에 방을 삭제합니다.`);
-                location.href = "http://localhost:8083";
-            })
+                .then(() => {
+                    console.log(`${roomId}에는 아무도 없기 때문에 방을 삭제합니다.`);
+                    location.href = "http://52.78.5.44";
+                })
         }
 
         event.returnValue = '';
+    });
+
+    // 클릭 이벤트를 감지하여 새로운 modal-body를 추가합니다.
+    const add_email_btn = document.getElementById('add-email-btn')!;
+
+    add_email_btn.addEventListener('click', () => {
+        // 부모 요소 생성
+        var modalBody = document.createElement('div');
+        modalBody.classList.add('modal-body');
+
+        // 자식 요소 생성
+        var inputGroup = document.createElement('div');
+        inputGroup.classList.add('input-group', 'mb-3');
+
+        var emailInput1 = document.createElement('input');
+        emailInput1.setAttribute('type', 'text');
+        emailInput1.classList.add('form-control', 'email-input1');
+        emailInput1.setAttribute('aria-label', 'Username');
+
+        var atSymbol = document.createElement('span');
+        atSymbol.classList.add('input-group-text');
+        atSymbol.textContent = '@';
+
+        var emailInput2 = document.createElement('input');
+        emailInput2.setAttribute('type', 'text');
+        emailInput2.classList.add('form-control', 'email-input2');
+        emailInput2.setAttribute('aria-label', 'Server');
+
+        // 요소들을 조합
+        inputGroup.appendChild(emailInput1);
+        inputGroup.appendChild(atSymbol);
+        inputGroup.appendChild(emailInput2);
+
+        modalBody.appendChild(inputGroup);
+
+        add_email_btn.parentNode?.parentNode?.insertBefore(modalBody, add_email_btn.parentNode.previousSibling);
+
     });
 }
 
@@ -230,6 +280,6 @@ if (sessionId) {
         main(roomId, paramId);
     } else {
         console.log(`불러올 유저 정보가 없습니다.`);
-        location.href = "http://localhost:8083";
+        location.href = "http://52.78.5.44";
     }
 }

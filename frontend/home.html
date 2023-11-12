@@ -36,7 +36,7 @@
             </div>
             <div class="collapse" id="create-room-btn">
                 <div class="split-line"></div>
-                <h4 style="margin-top: 30px;">호스트로 참가하기</h4>
+                <h5 style="margin-top: 30px;">호스트로 참가</h5>
                 <div style="max-width: 350px;">
                     <div id="create-uuid" class="input-group mb-3">
                         <input id="print-uuid" type="text" class="form-control" placeholder="코드를 생성하세요"
@@ -91,7 +91,7 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8083/create",
+                    url: "http://52.78.5.44/create",
                     contentType: "application/json",
                     data: JSON.stringify({
                         id: roomId
@@ -99,7 +99,7 @@
                     success: function (response) {
                         sessionStorage.setItem('userId', nickname);
                         console.log(`[${roomId}] 방을 생성하였습니다.`);
-                        window.location.href = `http://localhost:8083/${roomId}`;
+                        window.location.href = `http://52.78.5.44/${roomId}`;
                     },
                     error: function (error) {
                         console.log(`[${roomId}] 방을 생성할 수 없습니다!.`);
@@ -108,7 +108,7 @@
             });
             $("#enter").click(function () {
                 sessionStorage.setItem('userId', document.getElementById("name-input1").value);
-                window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
+                window.location.href = "http://52.78.5.44/" + document.getElementById("link-input").value;
             });
 
             $("#create-uuid-btn").click(function () {
