@@ -25,7 +25,7 @@ public class MailServiceImpl implements MailService {
                 message.setSubject("코드 에코와 함께 할 준비가 되었나요?");
                 String content = "";
                 content += "<div style='margin:100px;'>";
-                content += "<a href='http://52.78.5.44/?roomid="+link+"&nickname="+toAddress.split("@")[0]+"'>참여하기</a>";
+                content += "<a href='http://localhost:8083/?roomid="+link+"&nickname="+toAddress.split("@")[0]+"'>참여하기</a>";
                 content += "</div>";
                 message.setText(content, "utf-8", "html");
                 message.setFrom(new InternetAddress("Code-echo@gmail.com", "codeecho"));

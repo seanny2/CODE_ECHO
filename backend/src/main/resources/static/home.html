@@ -92,7 +92,7 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://52.78.5.44/create",
+                    url: "http://localhost:8083/create",
                     contentType: "application/json",
                     data: JSON.stringify({
                         id: roomId
@@ -100,7 +100,7 @@
                     success: function (response) {
                         sessionStorage.setItem('userId', nickname);
                         console.log(`[${roomId}] 방을 생성하였습니다.`);
-                        window.location.href = `http://52.78.5.44/${roomId}`;
+                        window.location.href = `http://localhost:8083/${roomId}`;
                     },
                     error: function (error) {
                         console.log(`[${roomId}] 방을 생성할 수 없습니다!.`);
@@ -109,7 +109,7 @@
             });
             $("#enter").click(function () {
                 sessionStorage.setItem('userId', document.getElementById("name-input1").value);
-                window.location.href = "http://52.78.5.44/" + document.getElementById("link-input").value;
+                window.location.href = "http://localhost:8083/" + document.getElementById("link-input").value;
             });
 
             $("#create-uuid-btn").click(function () {
